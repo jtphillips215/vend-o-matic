@@ -1,8 +1,37 @@
 import stat
-from fastapi import FastAPI, Response, status
+from fastapi import FastAPI, Response, status, HTTPException
 
 # creating app as instance of FastAPI
 app = FastAPI()
+
+
+# creating class for items to add to machine
+class Item:
+    def __init__(self, id):
+        self.id = id
+        self.quantity = 5
+
+
+# function for accessing item quantities as array
+def get_quantities():
+    quantities = []
+    for item in inventory:
+        quantities.append(item.quantity)
+    return quantities
+
+
+# function for getting the item quantity for a single item
+def get_item_quantity(id: int):
+    for item in inventory:
+        if item.id == id:
+            return item
+
+
+# instatiating 3 items to add to machine
+inventory = []
+for i in range(3):
+    item = Item(i)
+    inventory.append(item)
 
 
 # setting our default get request for the "/" url as a welcome message to test uvicorn
@@ -12,29 +41,29 @@ def root():
 
 
 # PUT request to add coin
-@app.put("/")
-def add_coin(response: Response):
-    response.status_code = status.HTTP_204_NO_CONTENT
+@app.put("/", status_code=status.HTTP_204_NO_CONTENT)
+def add_coin():
     pass
 
 
 # DELETE request to return coins
-@app.delete("/")
-def return_coins(response: Response):
-    response.status_code = status.HTTP_204_NO_CONTENT
+@app.delete("/", status_code=status.HTTP_204_NO_CONTENT)
+def return_coins():
     pass
 
 
 # GET request for global inventory in vending machine
 @app.get("/inventory")
 def get_machine_inventory():
-    pass
+    quantities = get_quantities()
+    return quantities
 
 
 # GET request for individual item inventory
 @app.get("/inventory/{id}")
 def get_item_inventory(id: int):
-    pass
+    item = get_item_quantity(id)
+    return item.quantity
 
 
 # PUT request for vending item
@@ -44,14 +73,12 @@ def vend_item(id: int):
 
 
 # PUT request for resource/item not found or out of stock 404
-@app.put("/inventory/{id}")
-def resource_not_found(id: int, response: Response):
-    response.status_code = status.HTTP_404_NOT_FOUND
+@app.put("/inventory/{id}", status_code=status.HTTP_404_NOT_FOUND)
+def resource_not_found(id: int):
     pass
 
 
 # PUT request for currency below purchase price 403
-@app.put("/inventory/")
-def currency_below_purchase_price(response: Response):
-    response.status_code = status.HTTP_403_FORBIDDEN
+@app.put("/inventory/{id}", status_code=status.HTTP_403_FORBIDDEN)
+def currency_below_purchase_price():
     pass
