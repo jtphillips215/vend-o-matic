@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Response
+import stat
+from fastapi import FastAPI, Response, status
 
 # creating app as instance of FastAPI
 app = FastAPI()
@@ -13,14 +14,14 @@ def root():
 # PUT request to add coin
 @app.put("/")
 def add_coin(response: Response):
-    response.status_code = 204
+    response.status_code = status.HTTP_204_NO_CONTENT
     pass
 
 
 # DELETE request to return coins
 @app.delete("/")
 def return_coins(response: Response):
-    response.status_code = 204
+    response.status_code = status.HTTP_204_NO_CONTENT
     pass
 
 
@@ -45,12 +46,12 @@ def vend_item(id: int):
 # PUT request for resource/item not found or out of stock 404
 @app.put("/inventory/{id}")
 def resource_not_found(id: int, response: Response):
-    response.status_code = 404
+    response.status_code = status.HTTP_404_NOT_FOUND
     pass
 
 
 # PUT request for currency below purchase price 403
 @app.put("/inventory/")
 def currency_below_purchase_price(response: Response):
-    response.status_code = 403
+    response.status_code = status.HTTP_403_FORBIDDEN
     pass
