@@ -12,6 +12,12 @@ class Item:
         self.quantity = 5
 
 
+# class for transaction
+class Transaction:
+    def __init__(self):
+        self.coin_count = 0
+
+
 # pydantic schema for coin for / PUT request
 class Coin(BaseModel):
     coin: int
@@ -38,6 +44,9 @@ for i in range(3):
     item = Item(i)
     inventory.append(item)
 
+# creating transaction for machine on startup
+transaction = Transaction()
+
 
 # setting our default get request for the "/" url as a welcome message to test uvicorn
 @app.get("/")
@@ -48,6 +57,8 @@ def root():
 # PUT request to add coin
 @app.put("/", status_code=status.HTTP_204_NO_CONTENT)
 def add_coin(coin: Coin):
+    transaction.coin_count += coin.coin
+    print(transaction.coin_count)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
