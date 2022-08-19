@@ -1,5 +1,5 @@
-import stat
 from fastapi import FastAPI, Response, status, HTTPException
+from pydantic import BaseModel
 
 # creating app as instance of FastAPI
 app = FastAPI()
@@ -10,6 +10,11 @@ class Item:
     def __init__(self, id):
         self.id = id
         self.quantity = 5
+
+
+# pydantic schema for coin for / PUT request
+class Coin(BaseModel):
+    coin: int
 
 
 # function for accessing item quantities as array
@@ -42,8 +47,8 @@ def root():
 
 # PUT request to add coin
 @app.put("/", status_code=status.HTTP_204_NO_CONTENT)
-def add_coin():
-    pass
+def add_coin(coin: Coin):
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 # DELETE request to return coins
