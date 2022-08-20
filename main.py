@@ -54,8 +54,11 @@ def test_coin_count():
 
 
 # testing the item quatity prior to vending items
-def test_quantity():
-    pass
+def test_quantity(item):
+    if item.quantity >= 1:
+        return True
+    else:
+        return False
 
 
 # instatiating 3 items to add to machine
@@ -98,15 +101,19 @@ def get_item_inventory(id: int):
 
 # PUT request for vending item
 @app.put("/inventory/{id}")
-def vend_item(id: int):
+def vend_item(id: int, response: Response):
+    # checking coin count prior to inventory as coin count won't require querying data source for inventory
+    # if held seperately like in a database
+    # could reverse order if differently priced items were added to machine at later date
     if test_coin_count():
-        pass
+        if test_quantity(inventory[id]):
+            pass
+        else:
+            response.headers["X-Coins"] = f"{transaction.coin_count}"
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
-        pass
-    if test_quantity():
-        pass
-    else:
-        pass
+        response.headers["X-Coins"] = f"{transaction.coin_count}"
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
 
 # PUT request for resource/item not found or out of stock 404
