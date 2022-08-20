@@ -45,13 +45,26 @@ def increment_coins(inserted_coin: Coin):
     transaction.coin_count += inserted_coin.coin
 
 
+# testing the coin count prior to vending items
+def test_coin_count():
+    if transaction.coin_count >= 2:
+        return True
+    else:
+        return False
+
+
+# testing the item quatity prior to vending items
+def test_quantity():
+    pass
+
+
 # instatiating 3 items to add to machine
 inventory = []
 for i in range(3):
     item = Item(i)
     inventory.append(item)
 
-# creating transaction for machine on startup
+# creating transaction with coin count of 0 for machine on startup
 transaction = Transaction()
 
 
@@ -59,7 +72,7 @@ transaction = Transaction()
 @app.put("/", status_code=status.HTTP_204_NO_CONTENT)
 def add_coin(inserted_coin: Coin, response: Response):
     increment_coins(inserted_coin)
-    response.headers["X-Coins"] = f"{inserted_coin.coin}"
+    response.headers["X-Coins"] = f"{transaction.coin_count}"
 
 
 # DELETE request to return coins
@@ -86,7 +99,14 @@ def get_item_inventory(id: int):
 # PUT request for vending item
 @app.put("/inventory/{id}")
 def vend_item(id: int):
-    pass
+    if test_coin_count():
+        pass
+    else:
+        pass
+    if test_quantity():
+        pass
+    else:
+        pass
 
 
 # PUT request for resource/item not found or out of stock 404
