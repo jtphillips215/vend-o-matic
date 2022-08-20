@@ -55,12 +55,6 @@ for i in range(3):
 transaction = Transaction()
 
 
-# setting our default get request for the "/" url as a welcome message to test uvicorn
-@app.get("/")
-def root():
-    return {"message": "Welcome to my api!!!"}
-
-
 # PUT request to add coin
 @app.put("/", status_code=status.HTTP_204_NO_CONTENT)
 def add_coin(inserted_coin: Coin, response: Response):
