@@ -1,4 +1,6 @@
-from fastapi import FastAPI, Response, status, HTTPException
+from urllib import response
+from fastapi import FastAPI, Response, status, HTTPException, Header
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 # creating app as instance of FastAPI
@@ -38,6 +40,11 @@ def get_item_quantity(id: int):
             return item
 
 
+# function for incrementing coin count
+def increment_coins(inserted_coin: Coin):
+    transaction.coin_count += inserted_coin.coin
+
+
 # instatiating 3 items to add to machine
 inventory = []
 for i in range(3):
@@ -56,16 +63,15 @@ def root():
 
 # PUT request to add coin
 @app.put("/", status_code=status.HTTP_204_NO_CONTENT)
-def add_coin(coin: Coin):
-    transaction.coin_count += coin.coin
-    print(transaction.coin_count)
+def add_coin(inserted_coin: Coin):
+    increment_coins(inserted_coin)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 # DELETE request to return coins
 @app.delete("/", status_code=status.HTTP_204_NO_CONTENT)
-def return_coins():
-    pass
+def return_coins(response: Response):
+    response.headers["X-Coins"] = f"{transaction.coin_count}"
 
 
 # GET request for global inventory in vending machine
