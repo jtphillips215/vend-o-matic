@@ -66,6 +66,7 @@ def add_coin(inserted_coin: Coin, response: Response):
 @app.delete("/", status_code=status.HTTP_204_NO_CONTENT)
 def return_coins(response: Response):
     response.headers["X-Coins"] = f"{transaction.coin_count}"
+    transaction.coin_count = 0
 
 
 # GET request for global inventory in vending machine
