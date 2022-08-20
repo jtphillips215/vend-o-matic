@@ -63,9 +63,9 @@ def root():
 
 # PUT request to add coin
 @app.put("/", status_code=status.HTTP_204_NO_CONTENT)
-def add_coin(inserted_coin: Coin):
+def add_coin(inserted_coin: Coin, response: Response):
     increment_coins(inserted_coin)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    response.headers["X-Coins"] = f"{inserted_coin.coin}"
 
 
 # DELETE request to return coins
