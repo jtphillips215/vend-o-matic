@@ -24,7 +24,7 @@ def get_quantities():
 # function for getting the item quantity for a single item
 def get_item_quantity(id: int):
     for item in inventory:
-        if item.id == id:
+        if item._id == id:
             return item
 
 
@@ -32,6 +32,14 @@ def get_item_quantity(id: int):
 def increment_coins(inserted_coin: Coin):
     transaction.set_coin_count(
         transaction.get_coin_count() + inserted_coin.coin)
+
+
+# dispense item removes two coins from the coin count and returns a value for vended item
+def dispense_item(item):
+    transaction.set_coin_count(transaction.get_coin_count() - 2)
+    item_vended = 1
+    item.set_quantity(item.get_quantity() - item_vended)
+    return item_vended
 
 
 # PUT request to add coin
@@ -59,7 +67,7 @@ def get_machine_inventory():
 @app.get("/inventory/{id}")
 def get_item_inventory(id: int):
     item = get_item_quantity(id)
-    return item.quantity
+    return item.get_quantity()
 
 
 # PUT request for vending item, returns status code and updates header if can't vend items
@@ -70,7 +78,7 @@ def vend_item(id: int, response: Response):
     # could reverse order if differently priced items were added to machine at later date
     if transaction.test_coin_count():
         if inventory[id].test_quantity():
-            vended_item_quantity = 1
+            vended_item_quantity = dispense_item(inventory[id])
             response.headers["X-Coins"] = f"{transaction.get_coin_count()}"
             transaction.clear_coin_count()
             return {"Quantity": f"{vended_item_quantity}"}
