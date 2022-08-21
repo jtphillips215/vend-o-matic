@@ -1,22 +1,11 @@
 from fastapi import FastAPI, Response, status, HTTPException, Header
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from item import Item
+from transaction import Transaction
 
 # creating app as instance of FastAPI
 app = FastAPI()
-
-
-# creating class for items to add to machine
-class Item:
-    def __init__(self, id):
-        self.id = id
-        self.quantity = 5
-
-
-# class for transaction
-class Transaction:
-    def __init__(self):
-        self.coin_count = 0
 
 
 # pydantic schema for coin for / PUT request
@@ -44,20 +33,16 @@ def increment_coins(inserted_coin: Coin):
     transaction.coin_count += inserted_coin.coin
 
 
-# testing the coin count prior to vending items
-def test_coin_count():
-    if transaction.coin_count >= 2:
-        return True
-    else:
-        return False
-
-
 # testing the item quatity prior to vending items
 def test_quantity(item):
     if item.quantity >= 1:
         return True
     else:
         return False
+
+
+def clear_coin_count():
+    transaction.coin_count = 0
 
 
 # instatiating 3 items to add to machine
@@ -81,7 +66,7 @@ def add_coin(inserted_coin: Coin, response: Response):
 @app.delete("/", status_code=status.HTTP_204_NO_CONTENT)
 def return_coins(response: Response):
     response.headers["X-Coins"] = f"{transaction.coin_count}"
-    transaction.coin_count = 0
+    clear_coin_count()
 
 
 # GET request for global inventory in vending machine
@@ -104,9 +89,12 @@ def vend_item(id: int, response: Response):
     # checking coin count prior to inventory as coin count won't require querying data source for inventory
     # if held seperately like in a database
     # could reverse order if differently priced items were added to machine at later date
-    if test_coin_count():
+    if transaction.test_coin_count():
         if test_quantity(inventory[id]):
-            pass
+            vended_item_quantity = 1
+            response.headers["X-Coins"] = f"{transaction.coin_count}"
+            clear_coin_count()
+            return {"Quantity": f"{vended_item_quantity}"}
         else:
             response.headers["X-Coins"] = f"{transaction.coin_count}"
             response.status_code = status.HTTP_404_NOT_FOUND
