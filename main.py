@@ -113,15 +113,3 @@ def vend_item(id: int, response: Response):
     else:
         response.headers["X-Coins"] = f"{transaction.coin_count}"
         response.status_code = status.HTTP_403_FORBIDDEN
-
-
-# PUT request for resource/item not found or out of stock 404
-# @app.put("/inventory/{id}", status_code=status.HTTP_404_NOT_FOUND)
-# def resource_not_found(id: int):
-#    pass
-
-
-# PUT request for currency below purchase price 403
-# @app.put("/inventory/{id}", status_code=status.HTTP_403_FORBIDDEN)
-# def currency_below_purchase_price():
-#    pass
