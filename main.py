@@ -17,7 +17,7 @@ class Coin(BaseModel):
 def get_quantities():
     quantities = []
     for item in inventory:
-        quantities.append(item.quantity)
+        quantities.append(item.get_quantity())
     return quantities
 
 
@@ -30,7 +30,8 @@ def get_item_quantity(id: int):
 
 # function for incrementing coin count
 def increment_coins(inserted_coin: Coin):
-    transaction.coin_count += inserted_coin.coin
+    transaction.set_coin_count(
+        transaction.get_coin_count() + inserted_coin.coin)
 
 
 # instatiating 3 items to add to machine
@@ -47,13 +48,13 @@ transaction = Transaction()
 @app.put("/", status_code=status.HTTP_204_NO_CONTENT)
 def add_coin(inserted_coin: Coin, response: Response):
     increment_coins(inserted_coin)
-    response.headers["X-Coins"] = f"{transaction.coin_count}"
+    response.headers["X-Coins"] = f"{transaction.get_coin_count()}"
 
 
 # DELETE request to return coins
 @app.delete("/", status_code=status.HTTP_204_NO_CONTENT)
 def return_coins(response: Response):
-    response.headers["X-Coins"] = f"{transaction.coin_count}"
+    response.headers["X-Coins"] = f"{transaction.get_coin_count()}"
     transaction.clear_coin_count()
 
 
@@ -80,12 +81,12 @@ def vend_item(id: int, response: Response):
     if transaction.test_coin_count():
         if inventory[id].test_quantity():
             vended_item_quantity = 1
-            response.headers["X-Coins"] = f"{transaction.coin_count}"
+            response.headers["X-Coins"] = f"{transaction.get_coin_count()}"
             transaction.clear_coin_count()
             return {"Quantity": f"{vended_item_quantity}"}
         else:
-            response.headers["X-Coins"] = f"{transaction.coin_count}"
+            response.headers["X-Coins"] = f"{transaction.get_coin_count()}"
             response.status_code = status.HTTP_404_NOT_FOUND
     else:
-        response.headers["X-Coins"] = f"{transaction.coin_count}"
+        response.headers["X-Coins"] = f"{transaction.get_coin_count()}"
         response.status_code = status.HTTP_403_FORBIDDEN

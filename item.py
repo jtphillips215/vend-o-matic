@@ -3,7 +3,15 @@ class Item:
         self.id = id
         self.quantity = 5
 
-    # testing the item quatity prior to vending items
+    def get_quantity(self):
+        return self.quantity
+
+    def set_quantity(self, quantity: int):
+        self.quantity = quantity
+
+    def get_id(self):
+        return self.id
+
     def test_quantity(self):
         if self.quantity >= 1:
             return True
