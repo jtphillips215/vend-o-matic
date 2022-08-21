@@ -99,7 +99,7 @@ def get_item_inventory(id: int):
     return item.quantity
 
 
-# PUT request for vending item
+# PUT request for vending item, returns status code and updates header if can't vend items
 @app.put("/inventory/{id}")
 def vend_item(id: int, response: Response):
     # checking coin count prior to inventory as coin count won't require querying data source for inventory
@@ -110,19 +110,19 @@ def vend_item(id: int, response: Response):
             pass
         else:
             response.headers["X-Coins"] = f"{transaction.coin_count}"
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+            response.status_code = status.HTTP_404_NOT_FOUND
     else:
         response.headers["X-Coins"] = f"{transaction.coin_count}"
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+        response.status_code = status.HTTP_403_FORBIDDEN
 
 
 # PUT request for resource/item not found or out of stock 404
-@app.put("/inventory/{id}", status_code=status.HTTP_404_NOT_FOUND)
-def resource_not_found(id: int):
-    pass
+# @app.put("/inventory/{id}", status_code=status.HTTP_404_NOT_FOUND)
+# def resource_not_found(id: int):
+#    pass
 
 
 # PUT request for currency below purchase price 403
-@app.put("/inventory/{id}", status_code=status.HTTP_403_FORBIDDEN)
-def currency_below_purchase_price():
-    pass
+# @app.put("/inventory/{id}", status_code=status.HTTP_403_FORBIDDEN)
+# def currency_below_purchase_price():
+#    pass
