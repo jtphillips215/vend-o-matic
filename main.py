@@ -33,18 +33,6 @@ def increment_coins(inserted_coin: Coin):
     transaction.coin_count += inserted_coin.coin
 
 
-# testing the item quatity prior to vending items
-def test_quantity(item):
-    if item.quantity >= 1:
-        return True
-    else:
-        return False
-
-
-def clear_coin_count():
-    transaction.coin_count = 0
-
-
 # instatiating 3 items to add to machine
 inventory = []
 for i in range(3):
@@ -66,7 +54,7 @@ def add_coin(inserted_coin: Coin, response: Response):
 @app.delete("/", status_code=status.HTTP_204_NO_CONTENT)
 def return_coins(response: Response):
     response.headers["X-Coins"] = f"{transaction.coin_count}"
-    clear_coin_count()
+    transaction.clear_coin_count()
 
 
 # GET request for global inventory in vending machine
@@ -90,10 +78,10 @@ def vend_item(id: int, response: Response):
     # if held seperately like in a database
     # could reverse order if differently priced items were added to machine at later date
     if transaction.test_coin_count():
-        if test_quantity(inventory[id]):
+        if inventory[id].test_quantity():
             vended_item_quantity = 1
             response.headers["X-Coins"] = f"{transaction.coin_count}"
-            clear_coin_count()
+            transaction.clear_coin_count()
             return {"Quantity": f"{vended_item_quantity}"}
         else:
             response.headers["X-Coins"] = f"{transaction.coin_count}"

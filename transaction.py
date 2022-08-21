@@ -8,3 +8,6 @@ class Transaction:
             return True
         else:
             return False
+
+    def clear_coin_count(self):
+        self.coin_count = 0
