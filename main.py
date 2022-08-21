@@ -1,4 +1,3 @@
-from urllib import response
 from fastapi import FastAPI, Response, status, HTTPException, Header
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
