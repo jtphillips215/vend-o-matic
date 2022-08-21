@@ -34,16 +34,6 @@ def increment_coins(inserted_coin: Coin):
         transaction.get_coin_count() + inserted_coin.coin)
 
 
-# instatiating 3 items to add to machine
-inventory = []
-for i in range(3):
-    item = Item(i)
-    inventory.append(item)
-
-# creating transaction with coin count of 0 for machine on startup
-transaction = Transaction()
-
-
 # PUT request to add coin
 @app.put("/", status_code=status.HTTP_204_NO_CONTENT)
 def add_coin(inserted_coin: Coin, response: Response):
@@ -90,3 +80,13 @@ def vend_item(id: int, response: Response):
     else:
         response.headers["X-Coins"] = f"{transaction.get_coin_count()}"
         response.status_code = status.HTTP_403_FORBIDDEN
+
+
+# instatiating 3 items to add to machine
+inventory = []
+for i in range(3):
+    item = Item(i)
+    inventory.append(item)
+
+# creating transaction with coin count of 0 for machine on startup
+transaction = Transaction()
