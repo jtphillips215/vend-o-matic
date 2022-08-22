@@ -7,21 +7,21 @@ Additional documentation can be found at http://127.0.0.1:8000/docs while runnin
 
 Directions on running the project:
 
-1. Set up your virtual environment:
--MacOS-
-python3 -m venv venv
--Windows-
-py -3 -m venv venv
+1. Set up your virtual environment:</br>
+-MacOS-</br>
+python3 -m venv venv</br>
+-Windows-</br>
+py -3 -m venv venv</br>
 
-2. Pip install FastAPI while in the virtual enviroment:
--Both-
-pip install fastapi
+2. Pip install FastAPI while in the virtual enviroment:</br>
+-Both-</br>
+pip install fastapi</br>
 
-3. Run the application from terminal:
--Both-
-uvicorn app.main:app
-or
-uvicorn app.main:app --reload
+3. Run the application from terminal:</br>
+-Both-</br>
+uvicorn app.main:app</br>
+or</br>
+uvicorn app.main:app --reload</br>
 
 Note- The --reload flag is intended for a development environment only. It reloads on save for any changes. It should not be used in production.
 
