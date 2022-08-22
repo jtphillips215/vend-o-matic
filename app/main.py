@@ -30,13 +30,14 @@ def get_item_quantity(id: int):
 
 # function for incrementing coin count
 def increment_coins(inserted_coin: Coin):
-    transaction.set_coin_count(
-        transaction.get_coin_count() + inserted_coin.coin)
+    if inserted_coin.coin == 1:
+        transaction.set_coin_count(
+            transaction.get_coin_count() + inserted_coin.coin)
 
 
 # dispense item removes two coins from the coin count and returns a value for vended item
 def dispense_item(item):
-    transaction.set_coin_count(transaction.get_coin_count() - 2)
+    transaction.set_coin_count(transaction.get_coin_count() - item.get_price())
     item_vended = 1
     item.set_quantity(item.get_quantity() - item_vended)
     return item_vended
@@ -90,6 +91,7 @@ def vend_item(id: int, response: Response):
         response.status_code = status.HTTP_403_FORBIDDEN
 
 
+# code to test the API is delivering the results needed
 # instatiating 3 items to add to machine
 inventory = []
 for i in range(3):
