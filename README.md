@@ -18,9 +18,9 @@ Directions on running the project:
 
 3. Run the application from terminal
    -Both-
-   uvicorn main:app
+   uvicorn app.main:app
    or
-   uvicorn main:app --reload
+   uvicorn app.main:app --reload
 
 Note- the --reload flag is intended for a development environment only. It reloads on save for any changes. It should not be used in production.
 

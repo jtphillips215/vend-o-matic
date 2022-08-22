@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Response, status, HTTPException, Header
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from item import Item
-from transaction import Transaction
+from app.item import Item
+from app.transaction import Transaction
 
 # creating app as instance of FastAPI
 app = FastAPI()
