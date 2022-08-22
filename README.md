@@ -15,7 +15,7 @@ py -3 -m venv venv</br>
 
 2. Pip install FastAPI while in the virtual enviroment:</br>
 -Both-</br>
-pip install fastapi</br>
+pip install fastapi[all]</br>
 
 3. Run the application from terminal:</br>
 -Both-</br>
