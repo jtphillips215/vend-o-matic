@@ -22,12 +22,14 @@ Directions on running the project:
    or
    uvicorn app.main:app --reload
 
-Note- the --reload flag is intended for a development environment only. It reloads on save for any changes. It should not be used in production.
+Note- The --reload flag is intended for a development environment only. It reloads on save for any changes. It should not be used in production.
 
 -Testing-
+
 This project can be tested using the interactive docs found at http://127.0.0.1:8000/docs while the project is running. Additional testing was performed using Postman as requests can be saved, repeated multiple times, and output for various tests can be viewed simultaneously for comparison.
 
 -Class breakdown-
+
 Item contains the code needed to generate and interact with the item class. This is used for items in the vending machine. It holds their id and quantity as fields. This could be further expanded as needs for the machine changes.
 
 Transaction contains the information needed to run tranactions for the machine. Methods include ways to reset the coin count in the event the plunger is pressed or to test and make sure enough coins are entered into the machine. This class could be further extended by tracking the total number of transactions completed, etc.
