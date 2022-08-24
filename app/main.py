@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from app.item import Item
 from app.transaction import Transaction
+import psycopg2
 
 # creating app as instance of FastAPI
 app = FastAPI()
