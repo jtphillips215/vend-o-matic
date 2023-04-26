@@ -33,7 +33,7 @@ requests can be saved, repeated multiple times, and output for various tests can
 -Class breakdown-
 
 Item contains the code needed to generate and interact with the item class. This is used for items in the vending machine. It holds their id and quantity as fields. This
-could be further expanded as needs for the machine changes.
+could be further expanded as needed for the machine changes.
 
 Transaction contains the information needed to run tranactions for the machine. Methods include ways to reset the coin count in the event the plunger is pressed or to test
 and make sure enough coins are entered into the machine. This class could be further extended by tracking the total number of transactions completed, etc.
